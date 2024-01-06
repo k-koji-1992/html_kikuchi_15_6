@@ -1,0 +1,44 @@
+body{
+    margin: auto;
+    font-size: 16px;
+    max-width: 1200px;
+  }
+
+
+
+.header { 
+    width: 100%;
+    margin: 0 auto;
+    display:  flex;
+  
+}
+
+nav {
+   margin-left: auto;
+   font-size: 21px;
+}
+
+nav ul { 
+    display: flex;
+}
+
+nav ul li {
+padding:  50px 25px;
+
+}
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align:center
+  }
+  a {
+    color: #333;
+    text-decoration: none;
+  }
+
+  #searchBoxContainer{
+    float: left;
+
+
+  }

@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    <link rel="stylesheet" href="/css/style.css">
     <!-- <scrip src="/js/BmapQuery.js"></script> -->
     <script src="/js/BmapQuery1.js"></script>
-    <title>非常時救援MAP</title>
+    <title>通勤途中のお店探索MAP（電車限定）</title>
 </head>
 
 <body>
@@ -36,7 +36,7 @@
             <!-- MAP[END] -->
         </div>
         <div id="thread"></div>
-        <div id="response">
+        <!-- <div id="response">
             <p>
                 投稿者：
             </p>
@@ -44,38 +44,52 @@
             <p>
                 投稿者の現在地：
             </p>
-            <div>
-                <input type="text" id="address1" placeholder="位置情報がここに表示されます" value="">
-            </div>
-
-            <p>
-                投稿者の座標：
-            </p>
-
-            <div id="geocode1">
+            <div id="address">
                 
             </div>
+
             <p>
-                要救助者の現在地：
+                座標：
             </p>
-            <div id="address2">
-            </div>
-            <p>
-                要救助者の座標：
-            </p>
-            <div id="geocode2">
-            </div>
+            <div id="geocode">
+               
+            </div> -->
+
+<!-- 
             <p>
                 状況：
             </p>
-            <textarea name="" id="text" value="" cols="30" rows="10" placeholder="投稿を書き込んでください"></textarea>
+            <textarea name="" id="text" value = "" cols="30" rows="10" placeholder="投稿を書き込んでください"></textarea>
 
             <button id="send">投稿</button>
-        </div>
+        </div> -->
 
 
+        <!-- Directions[START] -->
 
+        <div id="searchBoxContainer">
+            出発地:<input type="text" id="from" value="">
+            目的地:<input type="text" id="to" value="">
+            <!-- 経由地:<input type="text" id="array" value=""> -->
+            <input type="button" id="search" value="ルート検索">
+        <div id="mode"></div>
+        
 
+            <div id="direction"></div>
+        <!-- Directions[END] -->
+
+      
+        <!-- Directions[START] -->
+
+        <div id="searchBox">
+            種類:<select id="type">
+                <option value="men">ラーメン</option>
+                <option value="curry">カレー</option>
+            </select>
+        <input type="button" id="shopSearch" value="お店検索">
+
+            <div id="direction"></div>
+        <!-- Directions[END] -->
     </div>
 
 
@@ -83,15 +97,16 @@
     <script
         src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=[]'
         async defer></script>
-    
+    <script src="http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=[]"></script>
+   
 
-    <!--** 以下Firebase **-->
-    <script type="module">
+       <!--** 以下Firebase **-->
+       <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
-        import { getDatabase, ref, push, set, update, onChildAdded, remove, onChildRemoved, onChildChanged }
+        import { getDatabase, ref, push, set, update,onChildAdded, remove, onChildRemoved,onChildChanged}
             from "https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-database.js";
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -112,27 +127,23 @@
         // RealtimeDB内の"chat"を使う
         const dbRef = ref(db, "chat");
         $("#send").on("click", function () {
-            const uname = $("#uname").val() || "匿名希望";
+            const uname=$("#uname").val()||"ななしのプログラマー";
             const msg = {
                 uname: uname,
                 text: $("#text").val(),
-                userId: getOrGenerateUserId(), // ユーザーIDを取得または生成
-                address1: map.setLocation(lat, lon)
+                userId: getOrGenerateUserId() // ユーザーIDを取得または生成
             };
-
-            
-            console.log(msg)
             const newPostRef = push(dbRef);
             // pushできる状態にする
             set(newPostRef, msg);
             // DBに値を送信
 
-
+            
             $("#text").val('');
             // テキストボックス内のテキストをクリア
             $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
             // スクロールを一番下に移動
-
+        
         });
         // ランダムなID生成関数
         function generateRandomId() {
@@ -151,72 +162,64 @@
 
         let messageCount = 0; // 投稿されたメッセージの数を保持する変数
         onChildAdded(dbRef, function (data) {
-            console.log(data)
             const msg = data.val();
-            console.log(data.val)
             const key = data.key;
             // 削除・更新に必須
             var timestamp = new Date().toLocaleString();
-            var address1 = map.reverseGeocode(function (data){});
-            console.log(address1)
-            let h  = '<p id="' + key + '">';
+            let h = '<p id="'+key+'">';
             h += ++messageCount + ": "; // メッセージ数に応じて番号を追加
             h += msg.uname;
             h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
             h += timestamp;
             h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
             h += "ユーザーID: " + msg.userId; // msgオブジェクトのuserIdを使用
-            h += "<br>" 
-            h += address1;
+            h += "<br>";
+            h +='<span contentEditable="true" id="'+key+'_update">'+msg.text+'</span>';
             h += "<br>"
-            h += '<span contentEditable="true" id="' + key + '_update">' + msg.text + '</span>';
-            h += "<br>"
-            h += '<button class="remove" data-key="' + key + '">削除</button>';
+            h +='<button class="remove" data-key="'+key+'">削除</button>';
             h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
-            h += '<button class="update" data-key="' + key + '">アップデート</button>';
+            h +='<button class="update" data-key="'+key+'">アップデート</button>';
             h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
-            h += '<button class="reply" data-key="' + key + '""}">リプライ</button>';
+            h +='<button class="reply" data-key="'+key+'""}">リプライ</button>';
             h += "</p>";
             $("#thread").append(h); // #output の最後に追加
             memo.value = '';
         });
 
-        // 削除イベント
-        $("#thread").on("click", ".remove", function () {
-            const key = $(this).attr("data-key")
-            const remove_item = ref(db, "chat/" + key);
-            remove(remove_item);
-            // Firebaseデータ削除関数
-        });
-
-        // 更新イベント
-        $("#thread").on("click", ".update", function () {
-            const key = $(this).attr("data-key")
-            update(ref(db, "chat/" + key), {
-                text: $("#" + key + '_update').text(),
-
+            // 削除イベント
+            $("#thread").on("click",".remove",function(){
+                    const key=$(this).attr("data-key")
+                    const remove_item= ref(db,"chat/"+key);
+                    remove(remove_item);
+                    // Firebaseデータ削除関数
             });
 
+            // 更新イベント
+            $("#thread").on("click",".update",function(){
+                 const key = $(this).attr("data-key")
+                 update(ref(db,"chat/"+key),{
+                        text:$("#"+key+'_update').text(),
+            
+                 });
 
-        });
-        onChildRemoved(dbRef, (data) => {
-            $("#" + data.key).remove();
+
+            });
+            onChildRemoved(dbRef,(data)=>{
+            $("#"+data.key).remove();
             // DOM操作関数
-        });
-        // 更新処理がFirebase側で実行されたらイベント発生
-        onChildChanged(dbRef, (data) => {
-            $("#" + data.key + '_update').fadeOut(800).fadeIn(800);
+            });
+            // 更新処理がFirebase側で実行されたらイベント発生
+            onChildChanged(dbRef,(data)=>{
+                $("#"+data.key+'_update').fadeOut(800).fadeIn(800);
 
-        });
-  
-
-    </script>
-
+            });
+            </script>
     <!-- Firebaseここまで -->
 
+
     <script>
-      // 1．位置情報の取得に成功した時の処理
-  function mapsInit(position) {
+        // 1．位置情報の取得に成功した時の処理
+        function mapsInit(position) {
             //lat=緯度、lon=経度 を取得
             console.log(position);
             const lat = position.coords.latitude;
@@ -239,17 +242,18 @@
         };
 
         //3.位置情報取得オプション
-        var where = {
+        var set = {
             enableHighAccuracy: true, //より高精度な位置を求める
             maximumAge: 20000,        //最後の現在地情報取得が20秒以内であればその情報を再利用する設定
             timeout: 10000            //10秒以内に現在地情報を取得できなければ、処理を終了
         };
 
         //Main:位置情報を取得する処理 //getCurrentPosition :or: watchPosition
-        navigator.geolocation.getCurrentPosition(mapsInit, mapsError, where);
+        navigator.geolocation.getCurrentPosition(mapsInit, mapsError, set);
 
         //Initialization processing
         let map;
+
         function GetMap() {
 
             //1. Init
@@ -261,101 +265,78 @@
                 //現在地の取得
                 const lat = data.coords.latitude;
                 const lon = data.coords.longitude;
-                console.log(data)
                 //現在地を中心にしたマップ
                 map.startMap(lat, lon, "load", 15);
                 //現在地のピン
                 map.pin(lat, lon, "#ff0000");
-
+                
 
 
                 const location = map.setLocation(lat, lon);
                 map.reverseGeocode(location, function (data) {
                     console.log(data);
-
-                    document.querySelector("#address1").value = data;
-                    document.querySelector("#geocode1").innerHTML = lat + ',' + lon;
+                    document.querySelector("#from").value = data;
+                    // document.querySelector("#geocode").innerHTML = lat + ',' + lon;
+                 
                 });
 
                 map.onGeocode("click", function (clickPoint) {
                     map.reverseGeocode(clickPoint.location, function (data) {
                         console.log(data);
-                        document.querySelector("#address2").innerHTML = data;
+                        document.querySelector("#to").value= data;
                     });
                 });
-
-
+                //B. Get ReverseGeocode of click location
+                map.onGeocode("click", function (data) {
+                    console.log(data);                   //Get Geocode ObjectData
+                    const lat = data.location.latitude;  //Get latitude
+                    const lon = data.location.longitude; //Get longitude
+                
+                    // document.querySelector("#geocode").innerHTML = lat + ',' + lon;
+                    let pin = map.pin(lat, lon, "#0000ff")
+                    // ピンを置く
+                    map.onPin(pin, "click", function () {
+                    map.onInfobox(lat, lon, title, descript, actions);
+                    document.getElementById("#send").onclick = function () {
+                            const title = document.getElementsById('#uname').value;
+                            const descript = document.getElementsById('#descript').value;
+                            map.onInfobox(lat, lon, title, descript)
                     
-                    //B. Get ReverseGeocode of click location
-                    map.onGeocode("click", function (data) {
-                        console.log(data);                   //Get Geocode ObjectData
-                        const lat = data.location.latitude;  //Get latitude
-                        const lon = data.location.longitude; //Get longitude
-                        // map.reverseGeocode(clickPoint.location,function(data){
-                        map.reverseGeocode(data)
-                        console.log(data);                   //Get Geocode ObjectData
-
-
-                        let title = "Title"
-                        let descript = "descript"
-
-                        document.querySelector("#geocode2").innerHTML = lat + ',' + lon;
-                        let pin = map.pin(lat, lon, "#0000ff")
-                        // ピンを置く
-                        map.onPin(pin, "click", function () {
-
-                            let actions =
-                                [
-                                    //1.action
-                                   
-                                    {
-                                        label: '返信',
-                                        eventHandler: function () { //function
-
-                                        }
-                                    },
-                                    //2.action
-                                    {
-                                        label: '編集',
-                                        eventHandler: function () { //function
-
-                                        }
-                                    },
-                                    {
-                                        label: '削除',
-                                        eventHandler: function () { //function
-
-                                        }
-                                    }
-                                ];
-                            map.onInfobox(lat, lon, title, descript, actions);
-                            document.getElementById("#send").onclick = function () {
-                                const title = document.getElementsById('#uname').value;
-                                const descript = document.getElementsById('#descript').value;
-                                map.onInfobox(lat, lon, title, descript)
-
-                            };
-
-                        });
-
-
-
+                        };
+                
+                    });
+                       
 
                     });
-                });
+            });
 
 
 
 
+            document.getElementById("search").onclick = function () {
+                //Get From,To
+                const from = document.getElementById("from").value;  //StartPoint
+                const to = document.getElementById("to").value;    //EndPoint
+                const mode = document.getElementById("mode").value;  //
+                // const array = document.getElementById("array").value;   //Waypoints...
+                // map.direction("#direction", mode, from, to, array);  //Direction Methed
+
+                // //経由地なし
+                map.direction("#direction", mode, from, to);
+
+            };
+
+            map.selectedSuggestion("#from", "#searchBoxContainer");
+            map.selectedSuggestion("#to", "#searchBoxContainer");
+
+        }
 
 
-            }
-
-
-
-        
 
     </script>
+
+
+
 </body>
 
 </html>

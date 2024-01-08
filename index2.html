@@ -55,7 +55,7 @@
                
             </div> -->
 
-<!-- 
+        <!-- 
             <p>
                 状況：
             </p>
@@ -72,268 +72,155 @@
             目的地:<input type="text" id="to" value="">
             <!-- 経由地:<input type="text" id="array" value=""> -->
             <input type="button" id="search" value="ルート検索">
-        <div id="mode"></div>
-        
+            <div id="mode"></div>
+
 
             <div id="direction"></div>
-        <!-- Directions[END] -->
-
-      
-        <!-- Directions[START] -->
-
-        <div id="searchBox">
-            種類:<select id="type">
-                <option value="men">ラーメン</option>
-                <option value="curry">カレー</option>
-            </select>
-        <input type="button" id="shopSearch" value="お店検索">
-
-            <div id="direction"></div>
-        <!-- Directions[END] -->
-    </div>
+            <!-- Directions[END] -->
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script
-        src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=[]'
-        async defer></script>
-    <script src="http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=[]"></script>
-   
+            <!-- Directions[START] -->
 
-       <!--** 以下Firebase **-->
-       <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-        import { getDatabase, ref, push, set, update,onChildAdded, remove, onChildRemoved,onChildChanged}
-            from "https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-database.js";
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "",
-            authDomain: "chat-trial-7029f.firebaseapp.com",
-            projectId: "chat-trial-7029f",
-            storageBucket: "chat-trial-7029f.appspot.com",
-            messagingSenderId: "265048633140",
-            appId: "1:265048633140:web:af568eeb81ba35149e3f61"
-        };
+            <div id="searchBox">
+                種類:<select id="type">
+                    <option value="men">ラーメン</option>
+                    <option value="curry">カレー</option>
+                </select>
+                <input type="button" id="shopSearch" value="お店検索">
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-
-        // データベースの参照を作成
-        // RealtimeDBに接続
-        const db = getDatabase(app);
-        // RealtimeDB内の"chat"を使う
-        const dbRef = ref(db, "chat");
-        $("#send").on("click", function () {
-            const uname=$("#uname").val()||"ななしのプログラマー";
-            const msg = {
-                uname: uname,
-                text: $("#text").val(),
-                userId: getOrGenerateUserId() // ユーザーIDを取得または生成
-            };
-            const newPostRef = push(dbRef);
-            // pushできる状態にする
-            set(newPostRef, msg);
-            // DBに値を送信
-
-            
-            $("#text").val('');
-            // テキストボックス内のテキストをクリア
-            $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
-            // スクロールを一番下に移動
-        
-        });
-        // ランダムなID生成関数
-        function generateRandomId() {
-            return Math.random().toString(36).substring(2, 10);
-        }
-
-        // getOrGenerateUserId 関数の追加
-        function getOrGenerateUserId() {
-            let userId = localStorage.getItem("userId");
-            if (!userId) {
-                userId = generateRandomId();
-                localStorage.setItem("userId", userId);
-            }
-            return userId;
-        }
-
-        let messageCount = 0; // 投稿されたメッセージの数を保持する変数
-        onChildAdded(dbRef, function (data) {
-            const msg = data.val();
-            const key = data.key;
-            // 削除・更新に必須
-            var timestamp = new Date().toLocaleString();
-            let h = '<p id="'+key+'">';
-            h += ++messageCount + ": "; // メッセージ数に応じて番号を追加
-            h += msg.uname;
-            h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
-            h += timestamp;
-            h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
-            h += "ユーザーID: " + msg.userId; // msgオブジェクトのuserIdを使用
-            h += "<br>";
-            h +='<span contentEditable="true" id="'+key+'_update">'+msg.text+'</span>';
-            h += "<br>"
-            h +='<button class="remove" data-key="'+key+'">削除</button>';
-            h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
-            h +='<button class="update" data-key="'+key+'">アップデート</button>';
-            h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
-            h +='<button class="reply" data-key="'+key+'""}">リプライ</button>';
-            h += "</p>";
-            $("#thread").append(h); // #output の最後に追加
-            memo.value = '';
-        });
-
-            // 削除イベント
-            $("#thread").on("click",".remove",function(){
-                    const key=$(this).attr("data-key")
-                    const remove_item= ref(db,"chat/"+key);
-                    remove(remove_item);
-                    // Firebaseデータ削除関数
-            });
-
-            // 更新イベント
-            $("#thread").on("click",".update",function(){
-                 const key = $(this).attr("data-key")
-                 update(ref(db,"chat/"+key),{
-                        text:$("#"+key+'_update').text(),
-            
-                 });
+                <div id="direction"></div>
+                <!-- Directions[END] -->
+            </div>
 
 
-            });
-            onChildRemoved(dbRef,(data)=>{
-            $("#"+data.key).remove();
-            // DOM操作関数
-            });
-            // 更新処理がFirebase側で実行されたらイベント発生
-            onChildChanged(dbRef,(data)=>{
-                $("#"+data.key+'_update').fadeOut(800).fadeIn(800);
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script
+                src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=[]'
+                async defer></script>
+            <script src="http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=[]"></script>
 
-            });
+
+
+
+            <script>
+                // 1．位置情報の取得に成功した時の処理
+                function mapsInit(position) {
+                    //lat=緯度、lon=経度 を取得
+                    console.log(position);
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    console.log(lat, lon);
+                };
+                //2． 位置情報の取得に失敗した場合の処理
+                function mapsError(error) {
+                    let e = "";
+                    if (error.code == 1) { //1＝位置情報取得が許可されてない（ブラウザの設定）
+                        e = "位置情報が許可されてません";
+                    }
+                    if (error.code == 2) { //2＝現在地を特定できない
+                        e = "現在位置を特定できません";
+                    }
+                    if (error.code == 3) { //3＝位置情報を取得する前にタイムアウトになった場合
+                        e = "位置情報を取得する前にタイムアウトになりました";
+                    }
+                    alert("エラー：" + e);
+                };
+
+                //3.位置情報取得オプション
+                var set = {
+                    enableHighAccuracy: true, //より高精度な位置を求める
+                    maximumAge: 20000,        //最後の現在地情報取得が20秒以内であればその情報を再利用する設定
+                    timeout: 10000            //10秒以内に現在地情報を取得できなければ、処理を終了
+                };
+
+                //Main:位置情報を取得する処理 //getCurrentPosition :or: watchPosition
+                navigator.geolocation.getCurrentPosition(mapsInit, mapsError, set);
+
+                //Initialization processing
+                let map;
+                let currentLocationPin;
+                let destinationPin;
+
+                function GetMap() {
+
+                    //1. Init
+                    const map = new Bmap("#myMap");
+
+                    //2. geolocation: Display Map
+                    //------------------------------------------------------------------------
+                    map.geolocation(function (data) {
+                        //現在地の取得
+                        const lat = data.coords.latitude;
+                        const lon = data.coords.longitude;
+                        //現在地を中心にしたマップ
+                        map.startMap(lat, lon, "load", 15);
+                        //現在地のピン(赤)
+                        currentLocationPin = map.pin(lat, lon, "#ff0000");
+
+
+
+                        const location = map.setLocation(lat, lon);
+                        map.reverseGeocode(location, function (data) {
+                            console.log(data);
+                            document.querySelector("#from").value = data;
+                            // document.querySelector("#geocode").innerHTML = lat + ',' + lon;
+
+                        });
+                        // 地図上でのクリックイベント
+                        map.onGeocode("click", function (clickPoint) {
+                            // 以前の目的地ピンを削除
+                            if (destinationPin) {
+                                map.deletePin(destinationPin);
+                            }
+
+                            // 新しい目的地ピン（青）を設置
+                            destinationPin = map.pin(clickPoint.location.latitude, clickPoint.location.longitude, "#0000ff");
+                            const lat = clickPoint.location.latitude;  //Get latitude
+                            const lon = clickPoint.location.longitude; //Get longitude
+                            console.log(lat);
+                            console.log(lon);
+                            // 目的地の情報を取得して入力
+                            map.reverseGeocode(clickPoint.location, function (data) {
+                                console.log(data);
+                                document.querySelector("#to").value = data;
+                            });
+                        });
+                        // //B. Get ReverseGeocode of click location
+                        // map.onGeocode("click", function (data) {
+                        //     console.log(data);                   //Get Geocode ObjectData
+                        //     const lat = data.location.latitude;  //Get latitude
+                        //     const lon = data.location.longitude; //Get longitude
+
+                        //     // document.querySelector("#geocode").innerHTML = lat + ',' + lon;
+                        //     let pin = map.pin(lat, lon, "#0000ff")
+
+
+
+
+                        // });
+                    });
+
+                    document.getElementById("search").onclick = function () {
+                        //Get From,To
+                        const from = document.getElementById("from").value;  //StartPoint
+                        const to = document.getElementById("to").value;    //EndPoint
+                        const mode = document.getElementById("mode").value;  //
+                        // const array = document.getElementById("array").value;   //Waypoints...
+                        // map.direction("#direction", mode, from, to, array);  //Direction Methed
+
+                        // //経由地なし
+                        map.direction("#direction", mode, from, to);
+
+                    };
+
+                    map.selectedSuggestion("#from", "#searchBoxContainer");
+                    map.selectedSuggestion("#to", "#searchBoxContainer");
+
+                };
+
+                GetMap();
+
             </script>
-    <!-- Firebaseここまで -->
-
-
-    <script>
-        // 1．位置情報の取得に成功した時の処理
-        function mapsInit(position) {
-            //lat=緯度、lon=経度 を取得
-            console.log(position);
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            console.log(lat, lon);
-        };
-        //2． 位置情報の取得に失敗した場合の処理
-        function mapsError(error) {
-            let e = "";
-            if (error.code == 1) { //1＝位置情報取得が許可されてない（ブラウザの設定）
-                e = "位置情報が許可されてません";
-            }
-            if (error.code == 2) { //2＝現在地を特定できない
-                e = "現在位置を特定できません";
-            }
-            if (error.code == 3) { //3＝位置情報を取得する前にタイムアウトになった場合
-                e = "位置情報を取得する前にタイムアウトになりました";
-            }
-            alert("エラー：" + e);
-        };
-
-        //3.位置情報取得オプション
-        var set = {
-            enableHighAccuracy: true, //より高精度な位置を求める
-            maximumAge: 20000,        //最後の現在地情報取得が20秒以内であればその情報を再利用する設定
-            timeout: 10000            //10秒以内に現在地情報を取得できなければ、処理を終了
-        };
-
-        //Main:位置情報を取得する処理 //getCurrentPosition :or: watchPosition
-        navigator.geolocation.getCurrentPosition(mapsInit, mapsError, set);
-
-        //Initialization processing
-        let map;
-
-        function GetMap() {
-
-            //1. Init
-            const map = new Bmap("#myMap");
-
-            //2. geolocation: Display Map
-            //------------------------------------------------------------------------
-            map.geolocation(function (data) {
-                //現在地の取得
-                const lat = data.coords.latitude;
-                const lon = data.coords.longitude;
-                //現在地を中心にしたマップ
-                map.startMap(lat, lon, "load", 15);
-                //現在地のピン
-                map.pin(lat, lon, "#ff0000");
-                
-
-
-                const location = map.setLocation(lat, lon);
-                map.reverseGeocode(location, function (data) {
-                    console.log(data);
-                    document.querySelector("#from").value = data;
-                    // document.querySelector("#geocode").innerHTML = lat + ',' + lon;
-                 
-                });
-
-                map.onGeocode("click", function (clickPoint) {
-                    map.reverseGeocode(clickPoint.location, function (data) {
-                        console.log(data);
-                        document.querySelector("#to").value= data;
-                    });
-                });
-                //B. Get ReverseGeocode of click location
-                map.onGeocode("click", function (data) {
-                    console.log(data);                   //Get Geocode ObjectData
-                    const lat = data.location.latitude;  //Get latitude
-                    const lon = data.location.longitude; //Get longitude
-                
-                    // document.querySelector("#geocode").innerHTML = lat + ',' + lon;
-                    let pin = map.pin(lat, lon, "#0000ff")
-                    // ピンを置く
-                    map.onPin(pin, "click", function () {
-                    map.onInfobox(lat, lon, title, descript, actions);
-                    document.getElementById("#send").onclick = function () {
-                            const title = document.getElementsById('#uname').value;
-                            const descript = document.getElementsById('#descript').value;
-                            map.onInfobox(lat, lon, title, descript)
-                    
-                        };
-                
-                    });
-                       
-
-                    });
-            });
-
-
-
-
-            document.getElementById("search").onclick = function () {
-                //Get From,To
-                const from = document.getElementById("from").value;  //StartPoint
-                const to = document.getElementById("to").value;    //EndPoint
-                const mode = document.getElementById("mode").value;  //
-                // const array = document.getElementById("array").value;   //Waypoints...
-                // map.direction("#direction", mode, from, to, array);  //Direction Methed
-
-                // //経由地なし
-                map.direction("#direction", mode, from, to);
-
-            };
-
-            map.selectedSuggestion("#from", "#searchBoxContainer");
-            map.selectedSuggestion("#to", "#searchBoxContainer");
-
-        }
-
-
-
-    </script>
 
 
 

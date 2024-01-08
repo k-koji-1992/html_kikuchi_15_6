@@ -4,76 +4,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    <link rel="stylesheet" href="/css/style.css">
     <!-- <scrip src="/js/BmapQuery.js"></script> -->
     <script src="/js/BmapQuery1.js"></script>
     <title>非常時救援MAP</title>
 </head>
 
 <body>
-    <div>
+    <div id="wrapper">
         <div>
             <header class="header">
                 <div class="logo">
+                    <img src="/img/logo_03.jpg" alt="">
 
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="#about" class="about">このサイトについて</a></li>
+                        <!-- <li><a href="#about" class="about">このサイトについて</a></li>
                         <li><a href="#course" class="map">マップ</a></li>
                         <li><a href="#news" class="news">お知らせ</a></li>
-                        <li><a href="#register" class="register">会員登録</a></li>
-                        <li><a href="#contact" class="contact">お問い合わせ</a></li>
+                        <li><a href="#register" class="register">会員登録</a></li> -->
+                        <li> <select id="orderSelect" name="select" onChange="location.href=value;">
+                    <option disabled></option>
+                    <option value="/index.html">
+                        非常時
+                    </option>
+                    <option value="/index1.html">
+                        平常時
+                    </option>
+
+                </select></li>
                     </ul>
                 </nav>
             </header>
+        </div>
+
+
+        <div>
+
+            <h2>このＷｅｂアプリは非常時専用で運用しています。
+
+            </h2>
+
         </div>
         <!-- <div id="geocode">ReverseGeocode:data</div> -->
         <div>
 
             <!-- MAP[START] -->
-            <div id="myMap" style="width: 50%; height: 700px;"></div>
+            <div id="myMap" style="width: 100%; height: 700px;"></div>
             <!-- MAP[END] -->
         </div>
         <div id="thread"></div>
         <div id="response">
-            <p>
-                投稿者：
-            </p>
-            <input type="text" id="uname" placeholder="名前を書き込んでください">
-            <p>
-                投稿者の現在地：
-            </p>
-            <div>
-                <input type="text" id="address1" placeholder="位置情報がここに表示されます" value="">
-            </div>
+            <section id="contact">
+                <div class="layout-contact">
+                    <h2><span class="section-title">投稿</span></h2>
 
-            <p>
-                投稿者の座標：
-            </p>
+                    <form action="" class="wrapper">
+                        <div class="form">
+                            <div class="form-list">
+                                <dl class="form-item">
+                                    <dt class="form-label">投稿者：</dt>
+                                    <dd class="form-detail"><input type="text" id="uname" class="form-parts"
+                                            placeholder="名前を書き込んでください">
+                                    </dd>
+                                </dl>
+                                <dl class="form-item">
+                                    <dt for="kana" class="form-label">投稿者の現在地：</dt>
+                                    <dd class="form-detail"><input type="text" id="address1" class="form-parts"
+                                            placeholder="位置情報がここに表示されます" value="">
+                                    </dd>
+                                </dl>
+                                <dl class="form-item">
+                                    <dt class="form-label">要救助者の現在地：</dt>
+                                    <dd class="form-detail"><input type="text" id="address2" class="form-parts"
+                                            placeholder="位置情報がここに表示されます" value=""></dd>
+                                </dl>
 
-            <div id="geocode1">
-                
-            </div>
-            <p>
-                要救助者の現在地：
-            </p>
-            <div id="address2">
-            </div>
-            <p>
-                要救助者の座標：
-            </p>
-            <div id="geocode2">
-            </div>
-            <p>
-                状況：
-            </p>
-            <textarea name="" id="text" value="" cols="30" rows="10" placeholder="投稿を書き込んでください"></textarea>
+                                <dl class="form-item form-item__textarea">
+                                    <dt class="form-label form-label__textarea">状況：</dt>
+                                    <dd class="form-detail">
+                                        <textarea name="" id="text" value="" cols="30" rows="10"
+                                            class="form-parts form-parts__textarea"
+                                            placeholder="投稿を書き込んでください
+                                            例1:家が倒壊しています。
+                                            例2:家具に足を挟まれて動けません。
+                                            
+                                            "></textarea>
 
-            <button id="send">投稿</button>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <button id="send" class="btn btn-submit">投稿</button>
+
+                    </form>
+                </div>
+            </section>
+
         </div>
 
+        <!-- <section id="contact">
+            <div class="layout-contact">
+                <h2><span class="section-title">会員登録</span></h2>
 
+                <form action="" class="wrapper">
+                    <div class="form">
+                        <div class="form-list">
+                            <dl class="form-item">
+                                <dt for="name" class="form-label">名前</dt>
+                                <dd class="form-detail"><input type="text" name="name" id="name" class="form-parts"
+                                        placeholder="名前を書き込んでください">
+                                </dd>
+                            </dl>
+                            <dl class="form-item">
+                                <dt for="kana" class="form-label">カナ</dt>
+                                <dd class="form-detail"><input type="text" name="kana" class="form-parts"
+                                        placeholder="名前を書き込んでください"></dd>
+                            </dl>
+                            <dl class="form-item">
+                                <dt for="email" class="form-label">メールアドレス</dt>
+                                <dd class="form-detail"><input type="text" name="email" class="form-parts"
+                                        placeholder="メールアドレスを書き込んでください"></dd>
+                            </dl>
+
+                </form>
+            </div> -->
+        </section>
+        <footer class="footer text-center">
+            <div class="wrapper">
+                <small class="copyrights">copyrights G's Academy  All RIghts Reserved.
+                </small>
+            </div>
+        </footer>
+        <!-- <div id="replyForm" style="display:none;">
+            <textarea id="replyText" placeholder="返信を入力..."></textarea>
+            <button id="sendReply">送信</button>
+        </div> -->
 
 
     </div>
@@ -83,7 +150,7 @@
     <script
         src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=[]'
         async defer></script>
-    
+
 
     <!--** 以下Firebase **-->
     <script type="module">
@@ -95,7 +162,7 @@
             from "https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-database.js";
         // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "",
+            apiKey: "[]",
             authDomain: "chat-trial-7029f.firebaseapp.com",
             projectId: "chat-trial-7029f",
             storageBucket: "chat-trial-7029f.appspot.com",
@@ -111,20 +178,25 @@
         const db = getDatabase(app);
         // RealtimeDB内の"chat"を使う
         const dbRef = ref(db, "chat");
+        const repliesRef = ref(db, "replies")
+
         $("#send").on("click", function () {
             const uname = $("#uname").val() || "匿名希望";
             const msg = {
                 uname: uname,
                 text: $("#text").val(),
                 userId: getOrGenerateUserId(), // ユーザーIDを取得または生成
-                address1: map.setLocation(lat, lon)
+                address1: $("#address1").val(),
+                address2: $("#address2").val(),
             };
 
-            
+
             console.log(msg)
             const newPostRef = push(dbRef);
+
             // pushできる状態にする
             set(newPostRef, msg);
+
             // DBに値を送信
 
 
@@ -157,17 +229,18 @@
             const key = data.key;
             // 削除・更新に必須
             var timestamp = new Date().toLocaleString();
-            var address1 = map.reverseGeocode(function (data){});
-            console.log(address1)
-            let h  = '<p id="' + key + '">';
+            console.log(msg.address1)
+            let h = '<p id="' + key + '">';
             h += ++messageCount + ": "; // メッセージ数に応じて番号を追加
-            h += msg.uname;
+            h += '<span contentEditable="true" id="' + key + '_update">' + msg.uname + '</span>';
             h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
             h += timestamp;
             h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
             h += "ユーザーID: " + msg.userId; // msgオブジェクトのuserIdを使用
-            h += "<br>" 
-            h += address1;
+            h += "<br>"
+            h += '<span contentEditable="true" id="' + key + '_update">' + "現在地: " + msg.address1 + '</span>';
+            h += "<br>"
+            h += '<span contentEditable="true" id="' + key + '_update">' + "要救助者: " + msg.address2 + '</span>';
             h += "<br>"
             h += '<span contentEditable="true" id="' + key + '_update">' + msg.text + '</span>';
             h += "<br>"
@@ -175,7 +248,7 @@
             h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
             h += '<button class="update" data-key="' + key + '">アップデート</button>';
             h += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; // スペースを挿入
-            h += '<button class="reply" data-key="' + key + '""}">リプライ</button>';
+            h += '<button class="reply" data-key="' + key + '""}">返信</button>';
             h += "</p>";
             $("#thread").append(h); // #output の最後に追加
             memo.value = '';
@@ -208,15 +281,54 @@
             $("#" + data.key + '_update').fadeOut(800).fadeIn(800);
 
         });
-  
 
+        // const repliesRef = ref(db, 'replies/' + data.key);
+        onChildAdded(repliesRef, function (replyData) {
+            const replyMsg = replyData.val();
+
+        });
+
+        // 返信イベント
+        $("#thread").on("click", ".reply", function () {
+            const key = $(this).attr("data-key");
+            const messageNumber = $('#' + key).text().split(":")[0]; // 投稿の番号を取得
+
+            // 返信フォームを表示（リプライ先の番号を自動入力）
+            const replyForm = '<div id="replyForm_' + key + '">'
+                + '<textarea id="replyText_' + key + '">返信先: ' + messageNumber + '</textarea>'
+                + '<button id="sendReply_' + key + '">返信送信</button>'
+                + '</div>';
+            $('#' + key).append(replyForm);
+
+            // 返信送信イベント
+            $('#sendReply_' + key).on('click', function () {
+                const replyText = $('#replyText_' + key).val();
+                // データベースに返信を保存
+                const replyRef = ref(db, 'replies/' + key);
+                push(replyRef, { text: replyText, repliedTo: key });
+
+                // 返信内容をHTMLで表示
+                const replyHTML = '<div class="reply-message">返信内容: ' + replyText + '</div>';
+                $('#' + key).after(replyHTML); // 返信先の投稿の後に返信内容を追加
+                // const replyRef = push(replyRef);
+
+                // pushできる状態にする
+                // set(newPostRef, msg);
+                // 返信フォームを削除
+                $('#replyForm_' + key).remove();
+            });
+        });
+        // 返信に対する返信イベント
+        $("#thread").on("click", ".reply-to-reply", function () {
+            // 返信に対する返信のためのコードをここに記述
+        });
     </script>
 
     <!-- Firebaseここまで -->
 
     <script>
-      // 1．位置情報の取得に成功した時の処理
-  function mapsInit(position) {
+        // 1．位置情報の取得に成功した時の処理
+        function mapsInit(position) {
             //lat=緯度、lon=経度 を取得
             console.log(position);
             const lat = position.coords.latitude;
@@ -265,8 +377,7 @@
                 //現在地を中心にしたマップ
                 map.startMap(lat, lon, "load", 15);
                 //現在地のピン
-                map.pin(lat, lon, "#ff0000");
-
+                const currentLocationPin = map.pin(lat, lon, "#ff0000");
 
 
                 const location = map.setLocation(lat, lon);
@@ -274,67 +385,88 @@
                     console.log(data);
 
                     document.querySelector("#address1").value = data;
-                    document.querySelector("#geocode1").innerHTML = lat + ',' + lon;
+                    // document.querySelector("#geocode1").value = lat + ',' + lon;
                 });
 
                 map.onGeocode("click", function (clickPoint) {
                     map.reverseGeocode(clickPoint.location, function (data) {
                         console.log(data);
-                        document.querySelector("#address2").innerHTML = data;
+                        document.querySelector("#address2").value = data;
                     });
                 });
 
 
-                    
-                    //B. Get ReverseGeocode of click location
-                    map.onGeocode("click", function (data) {
-                        console.log(data);                   //Get Geocode ObjectData
-                        const lat = data.location.latitude;  //Get latitude
-                        const lon = data.location.longitude; //Get longitude
-                        // map.reverseGeocode(clickPoint.location,function(data){
-                        map.reverseGeocode(data)
-                        console.log(data);                   //Get Geocode ObjectData
+
+                //B. Get ReverseGeocode of click location
+                map.onGeocode("click", function (data) {
+                    console.log(data);                   //Get Geocode ObjectData
+                    const lat = data.location.latitude;  //Get latitude
+                    const lon = data.location.longitude; //Get longitude
+                    // map.reverseGeocode(clickPoint.location,function(data){
+                    map.reverseGeocode(data)
+                    console.log(data);                   //Get Geocode ObjectData
 
 
-                        let title = "Title"
-                        let descript = "descript"
 
-                        document.querySelector("#geocode2").innerHTML = lat + ',' + lon;
-                        let pin = map.pin(lat, lon, "#0000ff")
-                        // ピンを置く
-                        map.onPin(pin, "click", function () {
 
-                            let actions =
-                                [
-                                    //1.action
-                                   
-                                    {
-                                        label: '返信',
-                                        eventHandler: function () { //function
+                    // document.querySelector("#geocode2").value = lat + ',' + lon;
+                    let pin = map.pin(lat, lon, "#0000ff")
+                    // ピンを置く
+                    map.onPin(pin, "click", function () {
+                        map.reverseGeocode({ latitude: lat, longitude: lon }, function (address) {
+                            // 逆ジオコーディングの結果（住所情報）を取得
+                            let title = document.getElementById('uname').value;
+                            let descript = '<div style="width:300px;">住所：</div>' + address; // 住所情報を使用
 
-                                        }
-                                    },
-                                    //2.action
-                                    {
-                                        label: '編集',
-                                        eventHandler: function () { //function
+                            // 返信フォームのHTMLを定義
 
-                                        }
-                                    },
-                                    {
-                                        label: '削除',
-                                        eventHandler: function () { //function
 
-                                        }
-                                    }
-                                ];
-                            map.onInfobox(lat, lon, title, descript, actions);
-                            document.getElementById("#send").onclick = function () {
-                                const title = document.getElementsById('#uname').value;
-                                const descript = document.getElementsById('#descript').value;
-                                map.onInfobox(lat, lon, title, descript)
 
-                            };
+                            // let actions =
+                            // [
+                            //     //1.action
+
+                            //     {
+                            //         label: '返信',
+                            //         eventHandler: function () { //function
+                            //             // 返信フォームを表示
+                            //             document.getElementById('replyForm').style.display = 'block';
+
+                            //             // 送信ボタンのイベントリスナーを設定
+                            //             document.getElementById('sendReply').onclick = function () {
+                            //                 let replyText = document.getElementById('replyText').value;
+                            //                 console.log('返信内容:', replyText);
+                            //                 // ここで返信内容を処理（例：サーバーに送信）
+
+                            //                 // 返信フォームを非表示に
+                            //                 document.getElementById('replyForm').style.display = 'none';
+                            //             }
+                            //             // },
+                            //             // //2.action
+                            //             // {
+                            //             //     label: '編集',
+                            //             //     eventHandler: function () { //function
+
+                            //             //     }
+                            //             // },
+                            //             // {
+                            //             //     label: '削除',
+                            //             //     eventHandler: function () { //function
+
+                            //             //     }
+                            //         }
+                            //     }
+                            // ];
+                            const options = [];
+                            options[0] = map.onInfobox(lat, lon, title, descript)
+
+                            map.infoboxLayers(options, true);
+                            // document.getElementById("#send").onclick = function () {
+                            //     const title = document.getElementsById('#uname').value;
+                            //     const descript = document.getElementsById('#descript').value;
+                            //     map.onInfobox(lat, lon, title, descript)
+
+                            // };
 
                         });
 
@@ -349,13 +481,23 @@
 
 
 
-            }
+            });
+
+        }
 
 
-
-        
 
     </script>
+
+<script async>
+    const path = location.pathname;
+    for (let opt of document.getElementById("orderSelect").options) {
+         if (opt.value == path) {
+            opt.selected = true;
+            break;
+         }
+     }
+ </script>
 </body>
 
 </html>
